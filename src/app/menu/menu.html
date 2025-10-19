@@ -1,0 +1,112 @@
+<!-- Cabeçalho da aplicação -->
+<mat-toolbar color="primary" class="app-header">
+  <mat-icon class="header-icon">school</mat-icon>
+  <span class="app-title">{{ title }}</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="abrirAjuda()" class="help-button" 
+          matTooltip="Clique aqui se precisar de ajuda">
+    <mat-icon>help_outline</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Conteúdo principal -->
+<main class="main-content">
+  <!-- Seção de boas-vindas -->
+  <section class="welcome-section">
+    <mat-card class="welcome-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="welcome-icon">favorite</mat-icon>
+        <mat-card-title class="welcome-title">Bem-vindos!</mat-card-title>
+        <mat-card-subtitle class="welcome-subtitle">
+          Escolha um jogo abaixo e divirta-se aprendendo
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="welcome-text">
+          Este espaço foi criado especialmente para você! 
+          Aqui você encontrará jogos educativos que tornam o aprendizado mais fácil e divertido. 
+          Clique em qualquer jogo para começar.
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <!-- Seção dos jogos -->
+  <section class="games-section">
+    <h2 class="section-title">
+      <mat-icon>games</mat-icon>
+      Escolha um Jogo
+    </h2>
+    
+    <div class="games-grid">
+      @for (jogo of jogos; track jogo.id) {
+        <mat-card class="game-card" 
+                  [class.card-disponivel]="jogo.disponivel"
+                  [class.card-indisponivel]="!jogo.disponivel">
+          
+          <mat-card-header>
+            <mat-icon mat-card-avatar 
+                      [class]="'game-icon icon-' + jogo.cor"
+                      [class.icon-disabled]="!jogo.disponivel">
+              {{ jogo.icone }}
+            </mat-icon>
+            <mat-card-title class="game-title">{{ jogo.nome }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="game-content">
+            <p class="game-description">{{ jogo.descricao }}</p>
+            
+            @if (!jogo.disponivel) {
+              <div class="em-breve">
+                <mat-icon class="construction-icon">construction</mat-icon>
+                <span>Em breve!</span>
+              </div>
+            }
+          </mat-card-content>
+
+          <mat-card-actions class="game-actions">
+            <button mat-raised-button 
+                    [color]="jogo.disponivel ? jogo.cor : ''" 
+                    [disabled]="!jogo.disponivel"
+                    (click)="jogar(jogo)" 
+                    class="play-button">
+              
+              @if (jogo.disponivel) {
+                <mat-icon>play_arrow</mat-icon>
+                <span>Jogar Agora</span>
+              } @else {
+                <mat-icon>schedule</mat-icon>
+                <span>Em Desenvolvimento</span>
+              }
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <!-- Seção de informações -->
+  <section class="info-section">
+    <mat-card class="info-card">
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <mat-icon class="info-icon">accessibility</mat-icon>
+            <h3>Fácil de Usar</h3>
+            <p>Interface simples e clara, pensada especialmente para você</p>
+          </div>
+          <div class="info-item">
+            <mat-icon class="info-icon">favorite</mat-icon>
+            <h3>Divertido</h3>
+            <p>Aprender pode ser prazeroso em qualquer idade</p>
+          </div>
+          <div class="info-item">
+            <mat-icon class="info-icon">trending_up</mat-icon>
+            <h3>No Seu Ritmo</h3>
+            <p>Cada um aprende em seu próprio tempo, sem pressa</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</main>

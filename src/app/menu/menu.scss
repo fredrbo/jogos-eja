@@ -1,0 +1,343 @@
+/* Estilos para o componente Menu - Otimizado para terceira idade */
+
+/* Cabeçalho */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: 80px !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+  .header-icon {
+    font-size: 32px;
+    margin-right: 16px;
+  }
+
+  .app-title {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .help-button {
+    .mat-icon {
+      font-size: 28px;
+    }
+  }
+}
+
+/* Conteúdo principal */
+.main-content {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+}
+
+/* Seção de boas-vindas */
+.welcome-section {
+  margin-bottom: 40px;
+
+  .welcome-card {
+    border: 3px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+
+    .welcome-icon {
+      background: linear-gradient(135deg, #ff4081, #ff6ec7);
+      color: white;
+      font-size: 32px;
+    }
+
+    .welcome-title {
+      font-size: 32px;
+      font-weight: 600;
+      color: #1976d2;
+      margin-bottom: 8px;
+    }
+
+    .welcome-subtitle {
+      font-size: 20px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .welcome-text {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #444;
+      margin: 16px 0 0 0;
+    }
+  }
+}
+
+/* Seção dos jogos */
+.games-section {
+  margin-bottom: 40px;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 32px;
+    text-align: center;
+    justify-content: center;
+
+    .mat-icon {
+      font-size: 32px;
+    }
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    justify-items: center;
+
+    .game-card {
+      width: 100%;
+      max-width: 400px;
+      min-height: 280px;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      
+      &.card-disponivel {
+        border-color: #e0e0e0;
+        cursor: pointer;
+
+        &:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+          border-color: #2196f3;
+        }
+      }
+
+      &.card-indisponivel {
+        border-color: #f0f0f0;
+        opacity: 0.7;
+        background-color: #fafafa;
+      }
+
+      .game-icon {
+        font-size: 40px;
+        width: 64px !important;
+        height: 64px !important;
+        line-height: 64px !important;
+
+        &.icon-primary {
+          background: linear-gradient(135deg, #1976d2, #42a5f5);
+          color: white;
+        }
+
+        &.icon-accent {
+          background: linear-gradient(135deg, #c2185b, #f06292);
+          color: white;
+        }
+
+        &.icon-disabled {
+          background: #bdbdbd;
+          color: #757575;
+        }
+      }
+
+      .game-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      .game-content {
+        padding: 16px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .game-description {
+          font-size: 16px;
+          line-height: 1.5;
+          color: #666;
+          margin: 0 0 16px 0;
+        }
+
+        .em-breve {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #ff9800;
+          font-weight: 500;
+          font-size: 16px;
+
+          .construction-icon {
+            font-size: 20px;
+          }
+        }
+      }
+
+      .game-actions {
+        padding: 16px;
+        justify-content: center;
+
+        .play-button {
+          min-height: 56px;
+          min-width: 180px;
+          font-size: 16px;
+          font-weight: 600;
+          border-radius: 28px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .mat-icon {
+            font-size: 24px;
+          }
+
+          &:disabled {
+            background-color: #f5f5f5;
+            color: #bdbdbd;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Seção de informações */
+.info-section {
+  .info-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      padding: 16px 0;
+
+      .info-item {
+        text-align: center;
+        padding: 24px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+
+        .info-icon {
+          font-size: 48px;
+          color: #1976d2;
+          margin-bottom: 16px;
+        }
+
+        h3 {
+          font-size: 20px;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 12px;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 1.5;
+          color: #666;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+
+    .game-card {
+      max-width: 100%;
+    }
+  }
+
+  .welcome-title {
+    font-size: 28px !important;
+  }
+
+  .welcome-subtitle {
+    font-size: 18px !important;
+  }
+
+  .section-title {
+    font-size: 24px !important;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+  .app-header {
+    min-height: 70px !important;
+
+    .app-title {
+      font-size: 20px;
+    }
+
+    .header-icon {
+      font-size: 28px;
+    }
+  }
+
+  .main-content {
+    padding: 12px;
+  }
+
+  .welcome-title {
+    font-size: 24px !important;
+  }
+
+  .welcome-subtitle {
+    font-size: 16px !important;
+  }
+
+  .welcome-text {
+    font-size: 16px !important;
+  }
+
+  .games-grid {
+    .game-card {
+      min-height: 260px;
+
+      .game-title {
+        font-size: 20px;
+      }
+
+      .game-content {
+        min-height: 100px;
+
+        .game-description {
+          font-size: 15px;
+        }
+      }
+
+      .play-button {
+        min-width: 160px;
+        font-size: 15px;
+      }
+    }
+  }
+}

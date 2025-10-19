@@ -1,0 +1,29 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px; /* Fonte base maior para melhor legibilidade */
+}
+
+/* Botões com tamanho mínimo para facilitar cliques */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+  min-height: 48px !important;
+  min-width: 100px !important;
+  font-size: 16px !important;
+}
+
+/* Cards com bordas mais definidas */
+.mat-mdc-card {
+  border: 2px solid #e0e0e0;
+}
+
+/* Foco mais visível para navegação por teclado */
+.mat-mdc-button:focus,
+.mat-mdc-raised-button:focus,
+.mat-mdc-outlined-button:focus {
+  outline: 3px solid #2196f3 !important;
+  outline-offset: 2px !important;
+}
