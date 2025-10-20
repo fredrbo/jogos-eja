@@ -1,0 +1,219 @@
+<!-- Cabeçalho do jogo -->
+<mat-toolbar color="primary" class="game-header">
+  <button mat-icon-button (click)="voltarMenu()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span class="game-title">🎯 Treino de Digitação e Clique</span>
+  <span class="spacer"></span>
+  
+  <!-- Informações do jogo -->
+  <div class="game-info">
+    <div class="info-item">
+      <mat-icon>star</mat-icon>
+      <span>{{ estado.pontuacao }}</span>
+    </div>
+    <div class="info-item">
+      <mat-icon>speed</mat-icon>
+      <span>Nível {{ estado.nivel }}</span>
+    </div>
+    <div class="info-item">
+      <mat-icon>favorite</mat-icon>
+      <span>{{ estado.vidas }}</span>
+    </div>
+  </div>
+
+  <!-- Botões de controle -->
+  <button mat-icon-button (click)="pausarJogo()" *ngIf="jogoAtivo" class="control-button">
+    <mat-icon>{{ jogoPausado ? 'play_arrow' : 'pause' }}</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Área principal do jogo -->
+<main class="game-container">
+  
+  <!-- Tela de início/fim -->
+  <div class="game-overlay" *ngIf="!jogoAtivo">
+    <mat-card class="start-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="game-icon">🎮</mat-icon>
+        <mat-card-title>{{ jogoTerminado ? 'Fim de Jogo!' : 'Pronto para começar?' }}</mat-card-title>
+        <mat-card-subtitle *ngIf="!jogoTerminado">
+          Digite as letras/números que aparecem ou clique nos elementos destacados
+        </mat-card-subtitle>
+        <mat-card-subtitle *ngIf="jogoTerminado">
+          Pontuação final: {{ estado.pontuacao }} pontos
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content *ngIf="jogoTerminado" class="final-stats">
+        <div class="stat-item">
+          <mat-icon>trending_up</mat-icon>
+          <span>Nível alcançado: {{ estado.nivel }}</span>
+        </div>
+        <div class="stat-item">
+          <mat-icon>timer</mat-icon>
+          <span>Tempo médio: {{ tempoMedioReacao }}ms</span>
+        </div>
+        <div class="stat-item">
+          <mat-icon>check_circle</mat-icon>
+          <span>Desafios completos: {{ estado.desafiosCompletos }}</span>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="iniciarJogo()" class="start-button">
+          <mat-icon>play_arrow</mat-icon>
+          {{ jogoTerminado ? 'Jogar Novamente' : 'Começar Jogo' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Área de jogo ativa -->
+  <div class="game-area" *ngIf="jogoAtivo && !jogoPausado">
+    
+    <!-- Barra de progresso do nível -->
+    <div class="progress-section">
+      <div class="progress-info">
+        <span>Progresso do nível {{ estado.nivel }}</span>
+        <span>{{ estado.desafiosCompletos % 5 }}/5</span>
+      </div>
+      <mat-progress-bar 
+        mode="determinate" 
+        [value]="progressoNivel"
+        class="level-progress">
+      </mat-progress-bar>
+    </div>
+
+    <!-- Área do desafio atual -->
+    <div class="challenge-area">
+      
+      <!-- Desafio de digitação (letras/números) -->
+      <div class="typing-challenge" 
+           *ngIf="desafioAtual && desafioAtual.tipo !== 'clique'"
+           [class.letter-challenge]="desafioAtual.tipo === 'letra'"
+           [class.number-challenge]="desafioAtual.tipo === 'numero'">
+        
+        <div class="challenge-instruction">
+          <mat-icon>keyboard</mat-icon>
+          <span>{{ desafioAtual.tipo === 'letra' ? 'Digite a letra:' : 'Digite o número:' }}</span>
+        </div>
+        
+        <div class="challenge-target">
+          {{ desafioAtual.valor }}
+        </div>
+        
+        <div class="challenge-hint">
+          Pressione a tecla <kbd>{{ desafioAtual.valor }}</kbd> no seu teclado
+        </div>
+      </div>
+
+      <!-- Desafio de clique -->
+      <div class="click-challenge" *ngIf="desafioAtual && desafioAtual.tipo === 'clique'">
+        <div class="challenge-instruction">
+          <mat-icon>mouse</mat-icon>
+          <span>Clique no alvo que apareceu na tela!</span>
+        </div>
+        
+        <!-- Elemento clicável posicionado aleatoriamente -->
+        <div class="click-target"
+             [style.left.%]="desafioAtual.posicao?.x"
+             [style.top.%]="desafioAtual.posicao?.y"
+             (click)="onElementoClicado(desafioAtual.id)">
+          <div class="target-ring"></div>
+          <div class="target-center">
+            <mat-icon>gps_fixed</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Temporizador visual -->
+      <div class="timer-section">
+        <div class="timer-label">Tempo restante:</div>
+        <div class="timer-bar">
+          <div class="timer-fill" 
+               [style.animation-duration.ms]="estado.velocidade">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estatísticas durante o jogo -->
+    <div class="live-stats">
+      <div class="stat-card">
+        <mat-icon>speed</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{ tempoMedioReacao }}ms</span>
+          <span class="stat-label">Tempo médio</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <mat-icon>local_fire_department</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{ estado.desafiosCompletos }}</span>
+          <span class="stat-label">Sequência</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <mat-icon>timer</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{ estado.velocidade / 1000 }}s</span>
+          <span class="stat-label">Velocidade</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela de pausa -->
+  <div class="pause-overlay" *ngIf="jogoAtivo && jogoPausado">
+    <mat-card class="pause-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="pause-icon">pause_circle</mat-icon>
+        <mat-card-title>Jogo Pausado</mat-card-title>
+        <mat-card-subtitle>Descanse um pouco e volte quando quiser</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="pause-stats">
+        <div class="pause-stat">
+          <strong>Pontuação atual:</strong> {{ estado.pontuacao }}
+        </div>
+        <div class="pause-stat">
+          <strong>Nível:</strong> {{ estado.nivel }}
+        </div>
+        <div class="pause-stat">
+          <strong>Vidas restantes:</strong> {{ estado.vidas }}
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="pausarJogo()" class="resume-button">
+          <mat-icon>play_arrow</mat-icon>
+          Continuar
+        </button>
+        <button mat-button (click)="voltarMenu()" class="menu-button">
+          <mat-icon>home</mat-icon>
+          Menu Principal
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</main>
+
+<!-- Dicas de acessibilidade -->
+<div class="accessibility-hints" *ngIf="!jogoAtivo">
+  <mat-card class="hints-card">
+    <mat-card-content>
+      <h3>💡 Dicas para jogar:</h3>
+      <ul>
+        <li>📱 Use o teclado para digitar letras e números</li>
+        <li>🖱️ Use o mouse ou toque na tela para clicar nos alvos</li>
+        <li>⚡ O jogo fica mais rápido conforme você acerta</li>
+        <li>❤️ Você tem 3 vidas - não desista!</li>
+        <li>⏸️ Pode pausar a qualquer momento</li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>

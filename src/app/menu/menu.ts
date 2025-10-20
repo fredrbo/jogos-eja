@@ -37,52 +37,12 @@ export class MenuComponent {
 
   jogos: Jogo[] = [
     {
-      id: 'memoria-palavras',
-      nome: 'Jogo da Memória',
-      descricao: 'Encontre os pares de palavras e melhore sua memória',
-      icone: 'psychology',
+      id: 'digitacao',
+      nome: 'Jogo de Digitação',
+      descricao: 'Aperfeiçoe sua digitação com este jogo divertido',
+      icone: 'keyboard',
       cor: 'primary',
       disponivel: true
-    },
-    {
-      id: 'matematica-basica',
-      nome: 'Matemática Básica',
-      descricao: 'Pratique as quatro operações de forma divertida',
-      icone: 'calculate',
-      cor: 'accent',
-      disponivel: true
-    },
-    {
-      id: 'leitura-interpretacao',
-      nome: 'Leitura e Interpretação',
-      descricao: 'Leia textos curtos e responda perguntas',
-      icone: 'menu_book',
-      cor: 'primary',
-      disponivel: true
-    },
-    {
-      id: 'conhecimentos-gerais',
-      nome: 'Conhecimentos Gerais',
-      descricao: 'Teste seus conhecimentos sobre o mundo',
-      icone: 'public',
-      cor: 'accent',
-      disponivel: true
-    },
-    {
-      id: 'portugues-basico',
-      nome: 'Português Básico',
-      descricao: 'Aprenda gramática e ortografia',
-      icone: 'spell_check',
-      cor: 'primary',
-      disponivel: false
-    },
-    {
-      id: 'historia-brasil',
-      nome: 'História do Brasil',
-      descricao: 'Conheça fatos importantes da nossa história',
-      icone: 'account_balance',
-      cor: 'accent',
-      disponivel: false
     }
   ];
 
@@ -90,7 +50,7 @@ export class MenuComponent {
 
   jogar(jogo: Jogo): void {
     if (jogo.disponivel) {
-      this.router.navigate(['/jogo', jogo.id]);
+      this.router.navigate(['/jogo/', jogo.id]);
     }
   }
 

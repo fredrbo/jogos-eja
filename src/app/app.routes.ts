@@ -10,10 +10,9 @@ export const routes: Routes = [
     path: 'menu',
     loadComponent: () => import('./menu/menu').then(m => m.MenuComponent)
   },
-  // Rotas para os jogos (serão implementadas futuramente)
   {
-    path: 'jogo/:id',
-    loadComponent: () => import('./menu/menu').then(m => m.MenuComponent) // Temporário
+    path: 'jogo/digitacao',
+    loadComponent: () => import('./jogos/jogo-digitacao/jogo-digitacao').then(m => m.JogoDigitacaoComponent)
   },
   {
     path: '**',
