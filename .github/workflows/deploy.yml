@@ -37,6 +37,8 @@ jobs:
           fi
           # Cria arquivo .nojekyll para desabilitar Jekyll no GitHub Pages
           touch docs/.nojekyll
+          echo "Arquivo .nojekyll criado em: $(pwd)/docs/.nojekyll"
+          ls -la docs/.nojekyll
           echo "Conteúdo do arquivo .nojekyll:"
           cat docs/.nojekyll || echo "Arquivo vazio (isso está correto)"
           # Cria arquivo 404.html para SPA routing
@@ -60,3 +62,4 @@ jobs:
           publish_dir: ./docs
           force_orphan: true
           enable_jekyll: false
+          disable_nojekyll: false
