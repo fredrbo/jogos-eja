@@ -44,7 +44,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   estado: EstadoJogo = {
     pontuacao: 0,
     nivel: 1,
-    velocidade: 3000, // Começa com 3 segundos
+    velocidade: 30000, // Começa com 30 segundos
     desafiosCompletos: 0,
     vidas: 3,
     tempoReacao: []
@@ -62,8 +62,8 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   // Configurações
   readonly LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   readonly NUMEROS = '0123456789'.split('');
-  readonly VELOCIDADE_MINIMA = 800; // 0.8 segundos
-  readonly REDUCAO_VELOCIDADE = 100; // Reduz 100ms a cada nível
+  readonly VELOCIDADE_MINIMA = 5000; // 5 segundos mínimo
+  readonly REDUCAO_VELOCIDADE = 500; // Reduz 500ms (0,5s) a cada nível
 
   constructor(
     private router: Router,
@@ -93,7 +93,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
 
   mostrarInstrucoes() {
     this.snackBar.open(
-      '🎯 Digite as letras/números que aparecem na tela ou clique nos elementos destacados! O jogo fica mais rápido conforme você acerta.',
+      '🎯 Digite as letras/números que aparecem na tela ou clique nos elementos destacados! Você tem 30 segundos no início, depois fica mais rápido a cada nível.',
       'Começar!',
       {
         duration: 8000,
@@ -141,7 +141,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     this.estado = {
       pontuacao: 0,
       nivel: 1,
-      velocidade: 3000,
+      velocidade: 30000, // Começa com 30 segundos
       desafiosCompletos: 0,
       vidas: 3,
       tempoReacao: []

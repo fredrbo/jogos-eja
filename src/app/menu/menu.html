@@ -3,8 +3,7 @@
   <mat-icon class="header-icon">school</mat-icon>
   <span class="app-title">{{ title }}</span>
   <span class="spacer"></span>
-  <button mat-icon-button (click)="abrirAjuda()" class="help-button" 
-          matTooltip="Clique aqui se precisar de ajuda">
+  <button mat-icon-button (click)="abrirAjuda()" class="help-button" matTooltip="Clique aqui se precisar de ajuda">
     <mat-icon>help_outline</mat-icon>
   </button>
 </mat-toolbar>
@@ -23,8 +22,8 @@
       </mat-card-header>
       <mat-card-content>
         <p class="welcome-text">
-          Este espaço foi criado especialmente para você! 
-          Aqui você encontrará jogos educativos que tornam o aprendizado mais fácil e divertido. 
+          Este espaço foi criado especialmente para você!
+          Aqui você encontrará jogos educativos que tornam o aprendizado mais fácil e divertido.
           Clique em qualquer jogo para começar.
         </p>
       </mat-card-content>
@@ -37,56 +36,47 @@
       <mat-icon>games</mat-icon>
       Escolha um Jogo
     </h2>
-    
+
     <div class="games-grid">
       @for (jogo of jogos; track jogo.id) {
-        <mat-card class="game-card" 
-                  [class.card-disponivel]="jogo.disponivel"
-                  [class.card-indisponivel]="!jogo.disponivel">
-          
-          <mat-card-header>
-            <mat-icon mat-card-avatar 
-                      [class]="'game-icon icon-' + jogo.cor"
-                      [class.icon-disabled]="!jogo.disponivel">
-              {{ jogo.icone }}
-            </mat-icon>
-            <mat-card-title class="game-title">{{ jogo.nome }}</mat-card-title>
-          </mat-card-header>
+      <mat-card class="game-card" [class.card-disponivel]="jogo.disponivel"
+        [class.card-indisponivel]="!jogo.disponivel"   (click)="jogar(jogo)" >
 
-          <mat-card-content class="game-content">
-            <p class="game-description">{{ jogo.descricao }}</p>
-            
-            @if (!jogo.disponivel) {
-              <div class="em-breve">
-                <mat-icon class="construction-icon">construction</mat-icon>
-                <span>Em breve!</span>
-              </div>
+        <mat-card-header class="game-header">
+          <mat-icon mat-card-avatar [class]="'game-icon icon-' + jogo.cor" [class.icon-disabled]="!jogo.disponivel">
+            {{ jogo.icone }}
+          </mat-icon>
+          <mat-card-title class="game-title">{{ jogo.nome }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="game-content">
+          <p class="game-description">{{ jogo.descricao }}</p>
+
+          @if (!jogo.disponivel) {
+          <div class="em-breve">
+            <mat-icon class="construction-icon">construction</mat-icon>
+            <span>Em breve!</span>
+          </div>
+          }
+        </mat-card-content>
+
+        <mat-card-actions class="game-actions">
+          <button mat-button="outlined" [color]="jogo.disponivel ? jogo.cor : ''" [disabled]="!jogo.disponivel"
+            class="play-button">
+            @if (jogo.disponivel) {
+            <span>Jogar Agora</span>
+            } @else {
+            <span>Em Desenvolvimento</span>
             }
-          </mat-card-content>
-
-          <mat-card-actions class="game-actions">
-            <button mat-raised-button 
-                    [color]="jogo.disponivel ? jogo.cor : ''" 
-                    [disabled]="!jogo.disponivel"
-                    (click)="jogar(jogo)" 
-                    class="play-button">
-              
-              @if (jogo.disponivel) {
-                <mat-icon>play_arrow</mat-icon>
-                <span>Jogar Agora</span>
-              } @else {
-                <mat-icon>schedule</mat-icon>
-                <span>Em Desenvolvimento</span>
-              }
-            </button>
-          </mat-card-actions>
-        </mat-card>
+          </button>
+        </mat-card-actions>
+      </mat-card>
       }
     </div>
   </section>
 
   <!-- Seção de informações -->
-  <section class="info-section">
+  <!-- <section class="info-section">
     <mat-card class="info-card">
       <mat-card-content>
         <div class="info-grid">
@@ -108,5 +98,5 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </section>
+  </section> -->
 </main>

@@ -43,7 +43,15 @@ export class MenuComponent {
       icone: 'keyboard',
       cor: 'primary',
       disponivel: true
-    }
+    },
+    {
+      id: 'matematica',
+      nome: 'Jogo de Matemática bem legais',
+      descricao: 'Desafie suas habilidades matemáticas com este jogo',
+      icone: 'calculate',
+      cor: 'accent',
+      disponivel: true
+    },
   ];
 
   constructor(private router: Router) {}

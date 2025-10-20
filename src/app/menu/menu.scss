@@ -1,12 +1,21 @@
 /* Estilos para o componente Menu - Otimizado para terceira idade */
 
+
+.border {
+  border: 2px solid #1976d2;
+}
+
+
 /* Cabeçalho */
 .app-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   min-height: 80px !important;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: inherit; /* Garante que mantenha a cor do tema */
 
   .header-icon {
     font-size: 32px;
@@ -33,6 +42,7 @@
 /* Conteúdo principal */
 .main-content {
   padding: 24px;
+  padding-top: 104px; /* 80px do header + 24px de padding = espaçamento adequado */
   max-width: 1200px;
   margin: 0 auto;
   min-height: calc(100vh - 80px);
@@ -45,12 +55,14 @@
   .welcome-card {
     border: 3px solid #e0e0e0;
     border-radius: 16px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 
     .welcome-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: linear-gradient(135deg, #ff4081, #ff6ec7);
       color: white;
-      font-size: 32px;
     }
 
     .welcome-title {
@@ -101,22 +113,27 @@
     gap: 24px;
     justify-items: center;
 
+    .game-header {
+      display: flex;
+      align-items: center;
+      // justify-content: space-between;
+    }
     .game-card {
       width: 100%;
       max-width: 400px;
       min-height: 280px;
       border-radius: 16px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
       border: 2px solid transparent;
-      
+
       &.card-disponivel {
         border-color: #e0e0e0;
         cursor: pointer;
 
         &:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
           border-color: #2196f3;
         }
       }
@@ -132,7 +149,9 @@
         width: 64px !important;
         height: 64px !important;
         line-height: 64px !important;
-
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &.icon-primary {
           background: linear-gradient(135deg, #1976d2, #42a5f5);
           color: white;
@@ -187,14 +206,15 @@
       .game-actions {
         padding: 16px;
         justify-content: center;
-
+        
         .play-button {
+          align-items: center;
           min-height: 56px;
           min-width: 180px;
           font-size: 16px;
           font-weight: 600;
           border-radius: 28px;
-          display: flex;
+            display: flex;
           align-items: center;
           gap: 8px;
 
@@ -217,7 +237,7 @@
   .info-card {
     border: 2px solid #e0e0e0;
     border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
     .info-grid {
       display: grid;
@@ -304,6 +324,7 @@
 
   .main-content {
     padding: 12px;
+    padding-top: 82px; /* 70px do header + 12px de padding para mobile */
   }
 
   .welcome-title {

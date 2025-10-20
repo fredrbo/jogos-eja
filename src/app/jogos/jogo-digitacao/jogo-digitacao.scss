@@ -4,9 +4,12 @@
 .game-header {
   min-height: 80px !important;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  background: inherit; /* Garante que mantenha a cor do tema */
 
   .back-button {
     margin-right: 16px;
@@ -55,6 +58,7 @@
 /* Container principal */
 .game-container {
   min-height: calc(100vh - 80px);
+  margin-top: 80px; /* Adiciona margem para compensar o header fixo */
   position: relative;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   overflow: hidden;
@@ -140,7 +144,7 @@
 /* Área de jogo */
 .game-area {
   padding: 24px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 160px); /* Ajusta para compensar header fixo + margem */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -542,6 +546,10 @@
         }
       }
     }
+  }
+
+  .game-container {
+    margin-top: 70px; /* Ajusta para header menor em mobile */
   }
 
   .game-area {
