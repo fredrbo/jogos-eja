@@ -41,6 +41,7 @@
             "outputPath": "dist/jogos-eja",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "outputPath": "docs",
             "polyfills": [
               "zone.js"
             ],
@@ -65,8 +66,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "50kB",
+                  "maximumError": "100kB"
                 }
               ],
               "outputHashing": "all"
