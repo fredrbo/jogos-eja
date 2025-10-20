@@ -33,7 +33,7 @@ export interface Jogo {
   styleUrls: ['./menu.scss']
 })
 export class MenuComponent {
-  title = 'Jogos EJA - Aprender Brincando';
+  title = 'Jogos EJA | Aprender Brincando';
 
   jogos: Jogo[] = [
     {
