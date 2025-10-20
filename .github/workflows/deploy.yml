@@ -47,12 +47,20 @@ jobs:
           if [ -f "docs/index.html" ]; then
             cp docs/index.html docs/404.html
           fi
+          # Verifica se .nojekyll foi criado
+          if [ -f "docs/.nojekyll" ]; then
+            echo "Arquivo .nojekyll criado com sucesso"
+          else
+            echo "ERRO: Arquivo .nojekyll não foi criado"
+          fi
           # Lista arquivos gerados para debug
           echo "Arquivos gerados na pasta docs:"
           ls -la docs/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        with:
+          enable_jekyll: false
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
