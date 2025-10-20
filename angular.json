@@ -38,10 +38,9 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/jogos-eja",
+            "outputPath": "docs",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "docs",
             "polyfills": [
               "zone.js"
             ],
@@ -76,6 +75,24 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "github-pages": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "50kB",
+                  "maximumError": "100kB"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "baseHref": "/jogos-eja/"
             }
           },
           "defaultConfiguration": "production"

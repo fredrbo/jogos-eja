@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path docs --base-href /jogos-eja/",
+    "build": "ng build",
+    "build:gh-pages": "powershell -ExecutionPolicy Bypass -File ./build-gh-pages.ps1",
+    "deploy:gh-pages": "npm run build:gh-pages",
     "watch": "ng build --watch --configuration development"
   },
   "prettier": {
