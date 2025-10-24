@@ -3,9 +3,6 @@
   <mat-icon class="header-icon">school</mat-icon>
   <span class="app-title">{{ title }}</span>
   <span class="spacer"></span>
-  <button mat-icon-button (click)="abrirAjuda()" class="help-button" matTooltip="Clique aqui se precisar de ajuda">
-    <mat-icon>help_outline</mat-icon>
-  </button>
 </mat-toolbar>
 
 <!-- Conteúdo principal -->
@@ -17,7 +14,7 @@
         <mat-icon mat-card-avatar class="welcome-icon">favorite</mat-icon>
         <mat-card-title class="welcome-title">Bem-vindos!</mat-card-title>
         <mat-card-subtitle class="welcome-subtitle">
-          Escolha um jogo abaixo e divirta-se aprendendo
+          <!-- Escolha um jogo abaixo e divirta-se aprendendo -->
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -33,14 +30,13 @@
   <!-- Seção dos jogos -->
   <section class="games-section">
     <h2 class="section-title">
-      <mat-icon>games</mat-icon>
       Escolha um Jogo
     </h2>
 
     <div class="games-grid">
       @for (jogo of jogos; track jogo.id) {
-      <mat-card class="game-card" [class.card-disponivel]="jogo.disponivel"
-        [class.card-indisponivel]="!jogo.disponivel"   (click)="jogar(jogo)" >
+      <mat-card class="game-card" [class.card-disponivel]="jogo.disponivel" [class.card-indisponivel]="!jogo.disponivel"
+        (click)="jogar(jogo)">
 
         <mat-card-header class="game-header">
           <mat-icon mat-card-avatar [class]="'game-icon icon-' + jogo.cor" [class.icon-disabled]="!jogo.disponivel">

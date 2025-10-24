@@ -96,8 +96,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       '🎯 Digite as letras/números que aparecem na tela ou clique nos elementos destacados! Você tem 30 segundos no início, depois fica mais rápido a cada nível.',
       'Começar!',
       {
-        duration: 8000,
-        verticalPosition: 'top',
+        duration: 16000,
         horizontalPosition: 'center'
       }
     ).onAction().subscribe(() => {

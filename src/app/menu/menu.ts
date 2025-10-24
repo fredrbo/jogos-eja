@@ -33,7 +33,7 @@ export interface Jogo {
   styleUrls: ['./menu.scss']
 })
 export class MenuComponent {
-  title = 'Jogos EJA | Aprender Brincando';
+  title = 'Jogos EJA';
 
   jogos: Jogo[] = [
     {
@@ -43,15 +43,7 @@ export class MenuComponent {
       icone: 'keyboard',
       cor: 'primary',
       disponivel: true
-    },
-    {
-      id: 'matematica',
-      nome: 'Jogo de Matemática bem legais',
-      descricao: 'Desafie suas habilidades matemáticas com este jogo',
-      icone: 'calculate',
-      cor: 'accent',
-      disponivel: true
-    },
+    }
   ];
 
   constructor(private router: Router) {}
@@ -62,8 +54,5 @@ export class MenuComponent {
     }
   }
 
-  abrirAjuda(): void {
-    // Implementar modal de ajuda futuramente
-    console.log('Abrindo ajuda...');
-  }
+
 }

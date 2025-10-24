@@ -8,11 +8,6 @@
 
 /* Cabeçalho */
 .app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
   min-height: 80px !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: inherit; /* Garante que mantenha a cor do tema */
@@ -38,11 +33,16 @@
     }
   }
 }
+mat-card-header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Conteúdo principal */
 .main-content {
   padding: 24px;
-  padding-top: 104px; /* 80px do header + 24px de padding = espaçamento adequado */
+  padding-top: 46px;
   max-width: 1200px;
   margin: 0 auto;
   min-height: calc(100vh - 80px);
