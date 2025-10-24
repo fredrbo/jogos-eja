@@ -1,32 +1,9 @@
 <!-- Cabeçalho do jogo -->
-<mat-toolbar color="primary" class="game-header">
-  <button mat-icon-button (click)="voltarMenu()" class="back-button">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  <span class="game-title">🎯 Treino de Digitação e Clique</span>
-  <span class="spacer"></span>
-  
-  <!-- Informações do jogo -->
-  <div class="game-info">
-    <div class="info-item">
-      <mat-icon>star</mat-icon>
-      <span>{{ estado.pontuacao }}</span>
-    </div>
-    <div class="info-item">
-      <mat-icon>speed</mat-icon>
-      <span>Nível {{ estado.nivel }}</span>
-    </div>
-    <div class="info-item">
-      <mat-icon>favorite</mat-icon>
-      <span>{{ estado.vidas }}</span>
-    </div>
-  </div>
-
-  <!-- Botões de controle -->
-  <button mat-icon-button (click)="pausarJogo()" *ngIf="jogoAtivo" class="control-button">
-    <mat-icon>{{ jogoPausado ? 'play_arrow' : 'pause' }}</mat-icon>
-  </button>
-</mat-toolbar>
+<app-header 
+  [config]="headerConfig" 
+  (backClicked)="onHeaderBackClick()"
+  (pauseClicked)="onHeaderPauseClick()">
+</app-header>
 
 <!-- Área principal do jogo -->
 <main class="game-container">
@@ -201,19 +178,3 @@
   </div>
 
 </main>
-
-<!-- Dicas de acessibilidade -->
-<div class="accessibility-hints" *ngIf="!jogoAtivo">
-  <mat-card class="hints-card">
-    <mat-card-content>
-      <h3>💡 Dicas para jogar:</h3>
-      <ul>
-        <li>📱 Use o teclado para digitar letras e números</li>
-        <li>🖱️ Use o mouse ou toque na tela para clicar nos alvos</li>
-        <li>⚡ O jogo fica mais rápido conforme você acerta</li>
-        <li>❤️ Você tem 3 vidas - não desista!</li>
-        <li>⏸️ Pode pausar a qualquer momento</li>
-      </ul>
-    </mat-card-content>
-  </mat-card>
-</div>

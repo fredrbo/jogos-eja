@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent, HeaderConfig } from '../shared/header/header';
 
 export interface Jogo {
   id: string;
@@ -27,13 +28,22 @@ export interface Jogo {
     MatCardModule,
     MatIconModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    HeaderComponent
   ],
   templateUrl: './menu.html',
   styleUrls: ['./menu.scss']
 })
 export class MenuComponent {
   title = 'Jogos EJA';
+
+  headerConfig: HeaderConfig = {
+    title: this.title,
+    icon: 'school',
+    showBackButton: false,
+    showGameInfo: false,
+    showControls: false
+  };
 
   jogos: Jogo[] = [
     {

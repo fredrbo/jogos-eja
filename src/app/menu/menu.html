@@ -1,9 +1,5 @@
 <!-- Cabeçalho da aplicação -->
-<mat-toolbar color="primary" class="app-header">
-  <mat-icon class="header-icon">school</mat-icon>
-  <span class="app-title">{{ title }}</span>
-  <span class="spacer"></span>
-</mat-toolbar>
+<app-header [config]="headerConfig"></app-header>
 
 <!-- Conteúdo principal -->
 <main class="main-content">

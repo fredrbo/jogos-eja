@@ -1,0 +1,48 @@
+<mat-toolbar color="primary" class="app-header">
+  <!-- Botão de voltar (para jogos) -->
+  <button 
+    *ngIf="config.showBackButton" 
+    mat-icon-button 
+    (click)="onBackClick()" 
+    class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  
+  <!-- Ícone principal (para menu) -->
+  <mat-icon 
+    *ngIf="config.icon && !config.showBackButton" 
+    class="header-icon">
+    {{ config.icon }}
+  </mat-icon>
+  
+  <!-- Título -->
+  <span class="app-title">{{ config.title }}</span>
+  
+  <!-- Spacer para empurrar elementos para a direita -->
+  <span class="spacer"></span>
+  
+  <!-- Informações do jogo (pontuação, nível, vidas) -->
+  <div *ngIf="config.showGameInfo && config.gameInfo" class="game-info">
+    <div *ngIf="config.gameInfo.pontuacao !== undefined" class="info-item">
+      <mat-icon>star</mat-icon>
+      <span>{{ config.gameInfo.pontuacao }}</span>
+    </div>
+    <div *ngIf="config.gameInfo.nivel !== undefined" class="info-item">
+      <mat-icon>speed</mat-icon>
+      <span>Nível {{ config.gameInfo.nivel }}</span>
+    </div>
+    <div *ngIf="config.gameInfo.vidas !== undefined" class="info-item">
+      <mat-icon>favorite</mat-icon>
+      <span>{{ config.gameInfo.vidas }}</span>
+    </div>
+  </div>
+
+  <!-- Botão de pause/play (para jogos) -->
+  <button 
+    *ngIf="config.showControls && config.isGameActive" 
+    mat-icon-button 
+    (click)="onPauseClick()" 
+    class="control-button">
+    <mat-icon>{{ config.isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
+  </button>
+</mat-toolbar>

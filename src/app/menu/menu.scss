@@ -6,11 +6,12 @@
 }
 
 
-/* Cabeçalho */
+/* Cabeçalho - Agora gerenciado pelo componente shared/header */
+/*
 .app-header {
   min-height: 80px !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: inherit; /* Garante que mantenha a cor do tema */
+  background: inherit; 
 
   .header-icon {
     font-size: 32px;
@@ -33,6 +34,7 @@
     }
   }
 }
+*/
 mat-card-header{
   display: flex;
   align-items: center;

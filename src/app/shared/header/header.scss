@@ -1,0 +1,95 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .header-icon {
+    margin-right: 8px;
+    font-size: 24px;
+  }
+
+  .app-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .back-button {
+    margin-right: 8px;
+    
+    mat-icon {
+      font-size: 24px;
+    }
+  }
+
+  .game-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-right: 16px;
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.9rem;
+      
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .control-button {
+    margin-left: 8px;
+    
+    mat-icon {
+      font-size: 24px;
+    }
+  }
+}
+
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .app-header {
+    .app-title {
+      font-size: 1rem;
+      margin-left: 4px;
+    }
+
+    .game-info {
+      gap: 8px;
+      margin-right: 8px;
+
+      .info-item {
+        font-size: 0.8rem;
+        
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    .game-info {
+      flex-direction: column;
+      gap: 4px;
+      
+      .info-item {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HeaderComponent, HeaderConfig } from '../../shared/header/header';
 
 export interface DesafioDigitacao {
   tipo: 'letra' | 'numero' | 'clique';
@@ -34,7 +35,8 @@ export interface EstadoJogo {
     MatCardModule,
     MatIconModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    HeaderComponent
   ],
   templateUrl: './jogo-digitacao.html',
   styleUrls: ['./jogo-digitacao.scss']
@@ -59,6 +61,21 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   intervalId: any;
   timeoutId: any;
 
+  // Configuração do header
+  headerConfig: HeaderConfig = {
+    title: '🎯 Treino de Digitação e Clique',
+    showBackButton: true,
+    showGameInfo: true,
+    showControls: true,
+    gameInfo: {
+      pontuacao: this.estado.pontuacao,
+      nivel: this.estado.nivel,
+      vidas: this.estado.vidas
+    },
+    isPaused: this.jogoPausado,
+    isGameActive: this.jogoAtivo
+  };
+
   // Configurações
   readonly LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   readonly NUMEROS = '0123456789'.split('');
@@ -71,11 +88,25 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.mostrarInstrucoes();
+    this.atualizarHeader();
   }
 
   ngOnDestroy() {
     this.pararJogo();
+  }
+
+  // Atualiza a configuração do header com o estado atual do jogo
+  private atualizarHeader(): void {
+    this.headerConfig = {
+      ...this.headerConfig,
+      gameInfo: {
+        pontuacao: this.estado.pontuacao,
+        nivel: this.estado.nivel,
+        vidas: this.estado.vidas
+      },
+      isPaused: this.jogoPausado,
+      isGameActive: this.jogoAtivo
+    };
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -91,24 +122,13 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     }
   }
 
-  mostrarInstrucoes() {
-    this.snackBar.open(
-      '🎯 Digite as letras/números que aparecem na tela ou clique nos elementos destacados! Você tem 30 segundos no início, depois fica mais rápido a cada nível.',
-      'Começar!',
-      {
-        duration: 16000,
-        horizontalPosition: 'center'
-      }
-    ).onAction().subscribe(() => {
-      this.iniciarJogo();
-    });
-  }
 
   iniciarJogo() {
     this.resetarEstado();
     this.jogoAtivo = true;
     this.jogoTerminado = false;
     this.proximoDesafio();
+    this.atualizarHeader();
   }
 
   pausarJogo() {
@@ -120,20 +140,32 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
         .onAction().subscribe(() => {
           this.jogoPausado = false;
           this.proximoDesafio();
+          this.atualizarHeader();
         });
     } else {
       this.proximoDesafio();
     }
+    this.atualizarHeader();
   }
 
   pararJogo() {
     this.jogoAtivo = false;
     this.clearTimeouts();
+    this.atualizarHeader();
   }
 
   voltarMenu() {
     this.pararJogo();
     this.router.navigate(['/menu']);
+  }
+
+  // Handlers para eventos do header
+  onHeaderBackClick(): void {
+    this.voltarMenu();
+  }
+
+  onHeaderPauseClick(): void {
+    this.pausarJogo();
   }
 
   private resetarEstado() {
@@ -216,6 +248,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     
     this.estado.pontuacao += pontos;
     this.estado.desafiosCompletos++;
+    this.atualizarHeader();
     
     this.mostrarFeedback(`+${pontos} pontos! 🎉`, 'success');
     
@@ -229,6 +262,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
 
   private errouDesafio() {
     this.estado.vidas--;
+    this.atualizarHeader();
     this.mostrarFeedback('❌ Errou! Tente novamente', 'error');
     
     if (this.estado.vidas <= 0) {
@@ -244,6 +278,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       this.VELOCIDADE_MINIMA,
       this.estado.velocidade - this.REDUCAO_VELOCIDADE
     );
+    this.atualizarHeader();
     
     this.mostrarFeedback(
       `🆙 Nível ${this.estado.nivel}! Mais rápido agora!`,
