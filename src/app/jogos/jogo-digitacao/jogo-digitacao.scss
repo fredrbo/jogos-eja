@@ -1,72 +1,10 @@
-/* Estilos para o Jogo de Digitação e Clique - Otimizado para terceira idade */
-
-/* Cabeçalho do jogo - Agora gerenciado pelo componente shared/header */
-/*
-.game-header {
-  min-height: 80px !important;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: inherit;
-
-  .back-button {
-    margin-right: 16px;
-    
-    .mat-icon {
-      font-size: 28px;
-    }
-  }
-
-  .game-title {
-    font-size: 24px;
-    font-weight: 600;
-    flex-grow: 1;
-  }
-
-  .spacer {
-    flex: 1 1 auto;
-  }
-
-  .game-info {
-    display: flex;
-    gap: 24px;
-    margin-right: 16px;
-
-    .info-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      color: white;
-
-      .mat-icon {
-        font-size: 20px;
-      }
-    }
-  }
-
-  .control-button {
-    .mat-icon {
-      font-size: 28px;
-    }
-  }
-}
-*/
-
-/* Container principal */
 .game-container {
-  min-height: calc(100vh - 80px);
-  margin-top: 80px; /* Adiciona margem para compensar o header fixo */
+  min-height: calc(100vh);
   position: relative;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   overflow: hidden;
 }
 
-/* Overlays */
 .game-overlay,
 .pause-overlay {
   position: absolute;
@@ -77,14 +15,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background: rgba(0,0,0,0.3); - Removido o fundo preto */
-  /* backdrop-filter: blur(5px); - Removido o efeito blur */
   z-index: 100;
 }
 
 /* Cartão de início/fim */
 .start-card,
 .pause-card {
+  background-color: white;
   max-width: 500px;
   margin: 20px;
   text-align: center;
@@ -325,7 +262,7 @@
 }
 
 .timer-section {
-  margin-top: 80px;
+  margin-top: 90px;
   text-align: center;
   position: relative;
   z-index: 10;
@@ -660,8 +597,10 @@
 
 ::ng-deep {
   .snackbar-success {
-    background: #4caf50 !important;
-    color: white !important;
+    background: white !important;
+    color: #2e7d32 !important;
+    border-left: 4px solid #4caf50 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
   }
 
   .snackbar-error {
@@ -670,7 +609,9 @@
   }
 
   .snackbar-info {
-    background: #2196f3 !important;
-    color: white !important;
+    background: white !important;
+    color: #1565c0 !important;
+    border-left: 4px solid #2196f3 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
   }
 }

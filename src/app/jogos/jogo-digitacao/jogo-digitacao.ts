@@ -142,7 +142,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     
     if (this.jogoPausado) {
       this.clearTimeouts();
-      this.timerRodando = false; // Para o timer visual durante a pausa
+      this.timerRodando = false;
       this.snackBar.open('⏸️ Jogo pausado', 'Continuar', { duration: 3000 })
         .onAction().subscribe(() => {
           this.jogoPausado = false;
