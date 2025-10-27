@@ -104,13 +104,13 @@
         </div>
       </div>
 
-      <!-- Temporizador visual -->
-      <div class="timer-section">
+      <!-- Temporizador visual - Sempre visível quando há um desafio ativo -->
+      <div class="timer-section" *ngIf="desafioAtual">
         <div class="timer-label">Tempo restante:</div>
         <div class="timer-bar">
           <div class="timer-fill" 
-               [style.animation-duration.ms]="estado.velocidade">
-          </div>
+               [class.running]="timerRodando"
+               style="min-height: 10px; display: block;"></div>
         </div>
       </div>
     </div>
@@ -159,9 +159,7 @@
         <div class="pause-stat">
           <strong>Nível:</strong> {{ estado.nivel }}
         </div>
-        <div class="pause-stat">
-          <strong>Vidas restantes:</strong> {{ estado.vidas }}
-        </div>
+
       </mat-card-content>
       
       <mat-card-actions>

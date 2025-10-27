@@ -145,33 +145,36 @@
 
 /* Área de jogo */
 .game-area {
-  padding: 24px;
-  height: calc(100vh - 160px); /* Ajusta para compensar header fixo + margem */
+  padding: 16px; // Reduzi o padding
+  min-height: calc(100vh - 120px); // Mudei para min-height e reduzi a margem
+  max-height: calc(100vh - 120px); // Altura máxima para evitar overflow
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px; // Reduzi o gap
+  overflow-y: auto; // Permite scroll se necessário
 }
 
 /* Seção de progresso */
 .progress-section {
   background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 12px; // Reduzi o padding
+  border-radius: 12px; // Reduzi o border-radius
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  flex-shrink: 0; // Impede que encolha
 
   .progress-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    font-size: 16px;
+    margin-bottom: 8px; // Reduzi a margem
+    font-size: 14px; // Reduzi o font-size
     font-weight: 500;
     color: #333;
   }
 
   .level-progress {
-    height: 12px;
-    border-radius: 6px;
+    height: 8px; // Reduzi a altura
+    border-radius: 4px;
     
     ::ng-deep .mat-progress-bar-fill::after {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -185,13 +188,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; // Mudei para flex-start
   position: relative;
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-  padding: 40px;
-  margin: 20px 0;
+  border-radius: 16px; // Reduzi o border-radius
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 20px; // Reduzi o padding
+  margin: 8px 0; // Reduzi a margem
+  min-height: 300px; // Altura mínima em vez de flex
+  max-height: 400px; // Altura máxima para controlar o tamanho
 }
 
 /* Desafios de digitação */
@@ -253,23 +258,25 @@
 .click-challenge {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 200px; // Reduzi ainda mais a altura
+  margin-bottom: 10px; // Reduzi a margem
 
   .challenge-instruction {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    font-size: 20px;
+    gap: 8px; // Reduzi o gap
+    font-size: 16px; // Reduzi o font-size
     color: #666;
-    margin-bottom: 32px;
+    margin-bottom: 10px; // Reduzi a margem
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1; // Garante que fique acima do alvo
 
     .mat-icon {
-      font-size: 28px;
+      font-size: 20px; // Reduzi o font-size
       color: #1976d2;
     }
   }
@@ -319,30 +326,45 @@
 
 /* Seção do temporizador */
 .timer-section {
-  margin-top: 32px;
+  margin-top: 10px; // Reduzi a margem
   text-align: center;
+  position: relative;
+  z-index: 10; // Garante que fique acima de outros elementos
+  background: rgba(255, 255, 255, 0.9); // Fundo semi-transparente para garantir visibilidade
+  padding: 10px; // Reduzi o padding
+  border-radius: 8px; // Reduzi o border-radius
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  flex-shrink: 0; // Impede que encolha
 
   .timer-label {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 12px;
+    font-size: 14px; // Reduzi o font-size
+    color: #333; // Cor mais escura para melhor contraste
+    margin-bottom: 8px; // Reduzi a margem
+    font-weight: 600;
   }
 
   .timer-bar {
-    width: 300px;
-    height: 8px;
+    width: 250px; // Reduzi a largura
+    height: 10px; // Reduzi a altura
     background: #e0e0e0;
-    border-radius: 4px;
+    border-radius: 5px;
     margin: 0 auto;
     overflow: hidden;
     position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #ccc; // Borda para garantir que seja visível
 
     .timer-fill {
       height: 100%;
       background: linear-gradient(90deg, #4caf50, #ffc107, #f44336);
       width: 100%;
-      animation: timerCountdown linear;
       transform-origin: left;
+      animation: timerCountdown 30s linear infinite paused;
+      border-radius: 4px; // Bordas arredondadas na barra de preenchimento
+      
+      &.running {
+        animation-play-state: running;
+      }
     }
   }
 }

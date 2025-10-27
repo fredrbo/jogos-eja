@@ -21,7 +21,6 @@ export interface EstadoJogo {
   nivel: number;
   velocidade: number; // em milissegundos
   desafiosCompletos: number;
-  vidas: number;
   tempoReacao: number[];
 }
 
@@ -48,7 +47,6 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     nivel: 1,
     velocidade: 30000, // Começa com 30 segundos
     desafiosCompletos: 0,
-    vidas: 3,
     tempoReacao: []
   };
 
@@ -60,6 +58,9 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   tempoInicio = 0;
   intervalId: any;
   timeoutId: any;
+  
+  // Controle da animação do timer
+  timerRodando = false;
 
   // Configuração do header
   headerConfig: HeaderConfig = {
@@ -69,8 +70,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     showControls: true,
     gameInfo: {
       pontuacao: this.estado.pontuacao,
-      nivel: this.estado.nivel,
-      vidas: this.estado.vidas
+      nivel: this.estado.nivel
     },
     isPaused: this.jogoPausado,
     isGameActive: this.jogoAtivo
@@ -101,8 +101,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       ...this.headerConfig,
       gameInfo: {
         pontuacao: this.estado.pontuacao,
-        nivel: this.estado.nivel,
-        vidas: this.estado.vidas
+        nivel: this.estado.nivel
       },
       isPaused: this.jogoPausado,
       isGameActive: this.jogoAtivo
@@ -116,9 +115,11 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     const tecla = event.key.toUpperCase();
     
     if (this.desafioAtual.tipo !== 'clique' && tecla === this.desafioAtual.valor) {
+      // Para o timer ao acertar a tecla
+      this.timerRodando = false;
       this.acertouDesafio();
     } else if (this.desafioAtual.tipo !== 'clique') {
-      this.errouDesafio();
+      this.errouDesafio(false); // false indica que foi por tecla errada
     }
   }
 
@@ -127,6 +128,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     this.resetarEstado();
     this.jogoAtivo = true;
     this.jogoTerminado = false;
+    this.timerRodando = false; // Garante que o timer comece limpo
     this.proximoDesafio();
     this.atualizarHeader();
   }
@@ -136,6 +138,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     
     if (this.jogoPausado) {
       this.clearTimeouts();
+      this.timerRodando = false; // Para o timer visual durante a pausa
       this.snackBar.open('⏸️ Jogo pausado', 'Continuar', { duration: 3000 })
         .onAction().subscribe(() => {
           this.jogoPausado = false;
@@ -174,7 +177,6 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       nivel: 1,
       velocidade: 30000, // Começa com 30 segundos
       desafiosCompletos: 0,
-      vidas: 3,
       tempoReacao: []
     };
     this.desafioAtual = null;
@@ -186,11 +188,17 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     this.clearTimeouts();
     this.desafioAtual = this.gerarDesafio();
     this.tempoInicio = Date.now();
+    
+    // Log para debug
+    console.log(`Novo desafio: ${this.desafioAtual.tipo} - ${this.desafioAtual.valor}`);
+    
+    // Reinicia o temporizador visual para o tempo máximo
+    this.reiniciarTempoVisual();
 
     // Timeout para o desafio expirar
     this.timeoutId = setTimeout(() => {
       if (this.desafioAtual) {
-        this.errouDesafio();
+        this.errouDesafio(true); // true indica que foi por tempo esgotado
       }
     }, this.estado.velocidade);
   }
@@ -257,19 +265,85 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       this.subirNivel();
     }
     
+    // Para a animação atual antes de iniciar o próximo desafio
+    this.clearTimeouts();
+    
     setTimeout(() => this.proximoDesafio(), 500);
   }
 
-  private errouDesafio() {
-    this.estado.vidas--;
+  private errouDesafio(porTempoEsgotado: boolean = false) {
+    if (porTempoEsgotado) {
+      // Se foi por tempo esgotado, termina o jogo
+      this.mostrarFeedback('⏰ Tempo esgotado! Fim de jogo', 'error');
+      this.terminarJogo();
+      return;
+    }
+    
+    // Se foi por tecla errada, mantém o mesmo desafio
     this.atualizarHeader();
     this.mostrarFeedback('❌ Errou! Tente novamente', 'error');
     
-    if (this.estado.vidas <= 0) {
-      this.terminarJogo();
-    } else {
-      setTimeout(() => this.proximoDesafio(), 1000);
-    }
+    // Reinicia o temporizador para o mesmo desafio
+    this.clearTimeouts();
+    this.tempoInicio = Date.now();
+    
+    // Reinicia o temporizador visual para o tempo máximo
+    this.reiniciarTempoVisual();
+    
+    // Timeout para o desafio expirar novamente
+    this.timeoutId = setTimeout(() => {
+      if (this.desafioAtual) {
+        this.errouDesafio(true); // true indica que foi por tempo esgotado
+      }
+    }, this.estado.velocidade);
+  }
+
+  private reiniciarTempoVisual(): void {
+    // Para a animação
+    this.timerRodando = false;
+    
+    console.log(`Reiniciando timer visual para: ${this.desafioAtual?.tipo} - Velocidade: ${this.estado.velocidade}ms`);
+    
+    // Aguarda um frame e reinicia
+    requestAnimationFrame(() => {
+      // Aplica a duração atual
+      const timerElement = document.querySelector('.timer-fill') as HTMLElement;
+      const timerSection = document.querySelector('.timer-section') as HTMLElement;
+      
+      console.log(`Timer element encontrado: ${!!timerElement}`);
+      console.log(`Timer section encontrado: ${!!timerSection}`);
+      
+      if (timerElement) {
+        // Remove qualquer estilo inline anterior
+        timerElement.style.animation = 'none';
+        timerElement.style.animationDuration = `${this.estado.velocidade}ms`;
+        
+        // Force um reflow para garantir que as mudanças sejam aplicadas
+        timerElement.offsetHeight;
+        
+        console.log(`Aplicando animação: timerCountdown ${this.estado.velocidade}ms linear`);
+        
+        // Reinicia a animação
+        setTimeout(() => {
+          this.timerRodando = true;
+          console.log(`Timer ativado: ${this.timerRodando}`);
+        }, 10);
+      } else {
+        console.log('Timer element não encontrado, tentando novamente...');
+        // Se o elemento não foi encontrado, tenta novamente em mais um frame
+        requestAnimationFrame(() => {
+          const timerElementRetry = document.querySelector('.timer-fill') as HTMLElement;
+          if (timerElementRetry) {
+            timerElementRetry.style.animationDuration = `${this.estado.velocidade}ms`;
+            timerElementRetry.offsetHeight;
+            this.timerRodando = true;
+            console.log(`Timer reiniciado (retry): ${this.estado.velocidade}ms`);
+          } else {
+            console.log('Timer element ainda não encontrado após retry');
+          }
+        });
+      }
+    });
   }
 
   private subirNivel() {
@@ -289,6 +363,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   private terminarJogo() {
     this.jogoAtivo = false;
     this.jogoTerminado = true;
+    this.timerRodando = false; // Para o timer visual quando o jogo termina
     this.clearTimeouts();
     
     const tempoMedio = this.estado.tempoReacao.length > 0 
@@ -326,7 +401,26 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   // Método chamado quando elemento de clique é clicado
   onElementoClicado(id: string) {
     if (this.desafioAtual && this.desafioAtual.tipo === 'clique' && this.desafioAtual.id === id) {
+      // Para o timer ao acertar o clique
+      this.timerRodando = false;
       this.acertouDesafio();
+    }
+  }
+
+  // Método para detectar cliques fora do alvo
+  @HostListener('click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.jogoAtivo || this.jogoPausado || !this.desafioAtual || this.desafioAtual.tipo !== 'clique') {
+      return;
+    }
+
+    // Verifica se o clique foi no alvo ou fora dele
+    const clickTarget = event.target as HTMLElement;
+    const isTargetClick = clickTarget.closest('.click-target');
+    
+    // Se não clicou no alvo, considera como erro
+    if (!isTargetClick) {
+      this.errouDesafio(false); // false indica que foi por clique errado
     }
   }
 
