@@ -61,6 +61,10 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   
   // Controle da animação do timer
   timerRodando = false;
+  tempoRestanteSegundos = 0;
+  intervalTimerSegundos: any;
+  intervalBarraVisual: any;
+  inicioDesafio = 0;
 
   // Configuração do header
   headerConfig: HeaderConfig = {
@@ -80,7 +84,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
   readonly LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   readonly NUMEROS = '0123456789'.split('');
   readonly VELOCIDADE_MINIMA = 5000; // 5 segundos mínimo
-  readonly REDUCAO_VELOCIDADE = 500; // Reduz 500ms (0,5s) a cada nível
+  readonly REDUCAO_VELOCIDADE = 1000; // Reduz 1000ms (1s) a cada nível
 
   constructor(
     private router: Router,
@@ -128,7 +132,7 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     this.resetarEstado();
     this.jogoAtivo = true;
     this.jogoTerminado = false;
-    this.timerRodando = false; // Garante que o timer comece limpo
+    this.timerRodando = true;
     this.proximoDesafio();
     this.atualizarHeader();
   }
@@ -188,12 +192,14 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
     this.clearTimeouts();
     this.desafioAtual = this.gerarDesafio();
     this.tempoInicio = Date.now();
+    this.inicioDesafio = Date.now();
     
     // Log para debug
     console.log(`Novo desafio: ${this.desafioAtual.tipo} - ${this.desafioAtual.valor}`);
     
-    // Reinicia o temporizador visual para o tempo máximo
-    this.reiniciarTempoVisual();
+    // Inicia ambos os contadores sincronizados
+    this.iniciarContadorSegundos();
+    this.iniciarBarraVisual();
 
     // Timeout para o desafio expirar
     this.timeoutId = setTimeout(() => {
@@ -265,85 +271,72 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       this.subirNivel();
     }
     
-    // Para a animação atual antes de iniciar o próximo desafio
+    // Para a animação atual e reseta o tempo visual imediatamente
     this.clearTimeouts();
+    this.resetarTimerVisual();
     
     setTimeout(() => this.proximoDesafio(), 500);
   }
 
   private errouDesafio(porTempoEsgotado: boolean = false) {
     if (porTempoEsgotado) {
-      // Se foi por tempo esgotado, termina o jogo
       this.mostrarFeedback('⏰ Tempo esgotado! Fim de jogo', 'error');
       this.terminarJogo();
       return;
     }
     
-    // Se foi por tecla errada, mantém o mesmo desafio
     this.atualizarHeader();
     this.mostrarFeedback('❌ Errou! Tente novamente', 'error');
     
-    // Reinicia o temporizador para o mesmo desafio
-    this.clearTimeouts();
-    this.tempoInicio = Date.now();
+    // NÃO reseta os timers quando erra - continua contando do mesmo ponto
+    // Apenas limpa o timeout anterior e cria um novo baseado no tempo restante
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
     
-    // Reinicia o temporizador visual para o tempo máximo
-    this.reiniciarTempoVisual();
+    // Calcula quanto tempo ainda resta
+    const tempoDecorrido = Date.now() - this.inicioDesafio;
+    const tempoRestante = Math.max(0, this.estado.velocidade - tempoDecorrido);
     
-    // Timeout para o desafio expirar novamente
-    this.timeoutId = setTimeout(() => {
-      if (this.desafioAtual) {
-        this.errouDesafio(true); // true indica que foi por tempo esgotado
-      }
-    }, this.estado.velocidade);
+    // Se ainda há tempo, continua o desafio
+    if (tempoRestante > 0) {
+      this.timeoutId = setTimeout(() => {
+        if (this.desafioAtual) {
+          this.errouDesafio(true); // true indica que foi por tempo esgotado
+        }
+      }, tempoRestante);
+    } else {
+      // Se não há mais tempo, termina o jogo
+      this.errouDesafio(true);
+    }
   }
 
-  private reiniciarTempoVisual(): void {
-    // Para a animação
-    this.timerRodando = false;
+  private resetarTimerVisual(): void {
+    // Para todas as animações e intervalos
+    this.clearTimeouts();
     
-    console.log(`Reiniciando timer visual para: ${this.desafioAtual?.tipo} - Velocidade: ${this.estado.velocidade}ms`);
+    // Reseta a barra para 100% imediatamente
+    const timerElement = document.querySelector('.timer-fill') as HTMLElement;
+    if (timerElement) {
+      timerElement.style.animation = 'none';
+      timerElement.style.transform = 'scaleX(1)';
+      timerElement.style.transformOrigin = 'left';
+    }
     
-    // Aguarda um frame e reinicia
-    requestAnimationFrame(() => {
-      // Aplica a duração atual
-      const timerElement = document.querySelector('.timer-fill') as HTMLElement;
-      const timerSection = document.querySelector('.timer-section') as HTMLElement;
-      
-      console.log(`Timer element encontrado: ${!!timerElement}`);
-      console.log(`Timer section encontrado: ${!!timerSection}`);
-      
-      if (timerElement) {
-        // Remove qualquer estilo inline anterior
-        timerElement.style.animation = 'none';
-        timerElement.style.animationDuration = `${this.estado.velocidade}ms`;
-        
-        // Force um reflow para garantir que as mudanças sejam aplicadas
-        timerElement.offsetHeight;
-        
-        console.log(`Aplicando animação: timerCountdown ${this.estado.velocidade}ms linear`);
-        
-        // Reinicia a animação
-        setTimeout(() => {
-          this.timerRodando = true;
-          console.log(`Timer ativado: ${this.timerRodando}`);
-        }, 10);
-      } else {
-        console.log('Timer element não encontrado, tentando novamente...');
-        // Se o elemento não foi encontrado, tenta novamente em mais um frame
-        requestAnimationFrame(() => {
-          const timerElementRetry = document.querySelector('.timer-fill') as HTMLElement;
-          if (timerElementRetry) {
-            timerElementRetry.style.animationDuration = `${this.estado.velocidade}ms`;
-            timerElementRetry.offsetHeight;
-            this.timerRodando = true;
-            console.log(`Timer reiniciado (retry): ${this.estado.velocidade}ms`);
-          } else {
-            console.log('Timer element ainda não encontrado após retry');
-          }
-        });
-      }
-    });
+    // Atualiza os tempos de referência
+    this.tempoInicio = Date.now();
+    this.inicioDesafio = Date.now();
+    this.tempoRestanteSegundos = Math.ceil(this.estado.velocidade / 1000);
+    
+    console.log('Timer visual resetado para 100%');
+    
+    // Reinicia ambos os contadores após um pequeno delay
+    setTimeout(() => {
+      this.iniciarContadorSegundos();
+      this.iniciarBarraVisual();
+      console.log('Timers reiniciados após reset');
+    }, 50);
   }
 
   private subirNivel() {
@@ -396,6 +389,70 @@ export class JogoDigitacaoComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeoutId);
       this.timeoutId = null;
     }
+    if (this.intervalTimerSegundos) {
+      clearInterval(this.intervalTimerSegundos);
+      this.intervalTimerSegundos = null;
+    }
+    if (this.intervalBarraVisual) {
+      clearInterval(this.intervalBarraVisual);
+      this.intervalBarraVisual = null;
+    }
+  }
+
+  private iniciarContadorSegundos(): void {
+    // Limpa qualquer intervalo anterior
+    if (this.intervalTimerSegundos) {
+      clearInterval(this.intervalTimerSegundos);
+    }
+    
+    // Define o tempo inicial em segundos
+    this.tempoRestanteSegundos = Math.ceil(this.estado.velocidade / 1000);
+    this.inicioDesafio = Date.now();
+    
+    // Atualiza a cada 100ms para ter uma contagem mais suave
+    this.intervalTimerSegundos = setInterval(() => {
+      const tempoDecorrido = Date.now() - this.inicioDesafio;
+      const tempoRestante = this.estado.velocidade - tempoDecorrido;
+      this.tempoRestanteSegundos = Math.max(0, Math.ceil(tempoRestante / 1000));
+      
+      // Para o contador quando chega a 0
+      if (this.tempoRestanteSegundos <= 0) {
+        clearInterval(this.intervalTimerSegundos);
+        this.intervalTimerSegundos = null;
+      }
+    }, 100);
+  }
+
+  private iniciarBarraVisual(): void {
+    // Limpa qualquer intervalo anterior
+    if (this.intervalBarraVisual) {
+      clearInterval(this.intervalBarraVisual);
+    }
+    
+    this.timerRodando = true;
+    
+    // Atualiza a barra a cada 50ms para uma animação suave
+    this.intervalBarraVisual = setInterval(() => {
+      const tempoDecorrido = Date.now() - this.inicioDesafio;
+      const tempoRestante = this.estado.velocidade - tempoDecorrido;
+      const percentualRestante = Math.max(0, tempoRestante / this.estado.velocidade);
+      
+      const timerElement = document.querySelector('.timer-fill') as HTMLElement;
+      if (timerElement) {
+        // Remove qualquer animação CSS e controla diretamente via transform
+        timerElement.style.animation = 'none';
+        timerElement.style.transform = `scaleX(${percentualRestante})`;
+        timerElement.style.transformOrigin = 'left';
+        timerElement.style.transition = 'none'; // Remove transições para atualizações suaves
+      }
+      
+      // Para o intervalo quando o tempo acaba
+      if (percentualRestante <= 0) {
+        this.timerRodando = false;
+        clearInterval(this.intervalBarraVisual);
+        this.intervalBarraVisual = null;
+      }
+    }, 50);
   }
 
   // Método chamado quando elemento de clique é clicado

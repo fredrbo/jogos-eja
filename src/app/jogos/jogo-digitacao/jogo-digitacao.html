@@ -104,12 +104,12 @@
         </div>
       </div>
 
-      <!-- Temporizador visual - Sempre visível quando há um desafio ativo -->
       <div class="timer-section" *ngIf="desafioAtual">
-        <div class="timer-label">Tempo restante:</div>
+        <div class="timer-label">
+          Tempo restante: <span class="timer-seconds" [class.warning]="tempoRestanteSegundos <= 3">{{ tempoRestanteSegundos }}s</span>
+        </div>
         <div class="timer-bar">
           <div class="timer-fill" 
-               [class.running]="timerRodando"
                style="min-height: 10px; display: block;"></div>
         </div>
       </div>

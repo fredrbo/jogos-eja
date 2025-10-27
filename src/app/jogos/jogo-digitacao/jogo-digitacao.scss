@@ -89,7 +89,7 @@
   margin: 20px;
   text-align: center;
   border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 
   .game-icon,
   .pause-icon {
@@ -159,14 +159,14 @@
   background: white;
   padding: 12px; // Reduzi o padding
   border-radius: 12px; // Reduzi o border-radius
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   flex-shrink: 0; // Impede que encolha
 
   .progress-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px; // Reduzi a margem
+    margin-bottom: 8px;
     font-size: 14px; // Reduzi o font-size
     font-weight: 500;
     color: #333;
@@ -175,7 +175,7 @@
   .level-progress {
     height: 8px; // Reduzi a altura
     border-radius: 4px;
-    
+
     ::ng-deep .mat-progress-bar-fill::after {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
@@ -192,9 +192,9 @@
   position: relative;
   background: white;
   border-radius: 16px; // Reduzi o border-radius
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 20px; // Reduzi o padding
-  margin: 8px 0; // Reduzi a margem
+  margin: 8px 0;
   min-height: 300px; // Altura mínima em vez de flex
   max-height: 400px; // Altura máxima para controlar o tamanho
 }
@@ -224,7 +224,7 @@
     font-weight: 900;
     text-align: center;
     margin: 32px 0;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
     animation: pulse 1s ease-in-out infinite;
   }
 
@@ -240,7 +240,7 @@
   .challenge-hint {
     font-size: 18px;
     color: #888;
-    
+
     kbd {
       background: #f5f5f5;
       border: 2px solid #ddd;
@@ -249,7 +249,7 @@
       font-size: 20px;
       font-weight: bold;
       margin: 0 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
   }
 }
@@ -259,7 +259,7 @@
   position: relative;
   width: 100%;
   height: 200px; // Reduzi ainda mais a altura
-  margin-bottom: 10px; // Reduzi a margem
+  margin-bottom: 10px;
 
   .challenge-instruction {
     display: flex;
@@ -268,7 +268,7 @@
     gap: 8px; // Reduzi o gap
     font-size: 16px; // Reduzi o font-size
     color: #666;
-    margin-bottom: 10px; // Reduzi a margem
+    margin-bottom: 10px;
     position: absolute;
     top: 0;
     left: 50%;
@@ -324,52 +324,64 @@
   }
 }
 
-/* Seção do temporizador */
 .timer-section {
-  margin-top: 10px; // Reduzi a margem
+  margin-top: 80px;
   text-align: center;
   position: relative;
-  z-index: 10; // Garante que fique acima de outros elementos
-  background: rgba(255, 255, 255, 0.9); // Fundo semi-transparente para garantir visibilidade
-  padding: 10px; // Reduzi o padding
-  border-radius: 8px; // Reduzi o border-radius
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  flex-shrink: 0; // Impede que encolha
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 
   .timer-label {
-    font-size: 14px; // Reduzi o font-size
-    color: #333; // Cor mais escura para melhor contraste
-    margin-bottom: 8px; // Reduzi a margem
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
     font-weight: 600;
+
+    .timer-seconds {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1976d2;
+      padding: 2px 6px;
+      background: rgba(25, 118, 210, 0.1);
+      border-radius: 4px;
+      margin-left: 4px;
+      display: inline-block;
+      min-width: 30px;
+      transition: all 0.3s ease;
+
+      &.warning {
+        color: #f44336;
+        background: rgba(244, 67, 54, 0.1);
+        animation: pulse 1s infinite;
+      }
+    }
   }
 
   .timer-bar {
-    width: 250px; // Reduzi a largura
-    height: 10px; // Reduzi a altura
+    width: 250px;
+    height: 10px;
     background: #e0e0e0;
     border-radius: 5px;
     margin: 0 auto;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-    border: 1px solid #ccc; // Borda para garantir que seja visível
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
 
     .timer-fill {
       height: 100%;
       background: linear-gradient(90deg, #4caf50, #ffc107, #f44336);
       width: 100%;
       transform-origin: left;
-      animation: timerCountdown 30s linear infinite paused;
-      border-radius: 4px; // Bordas arredondadas na barra de preenchimento
-      
-      &.running {
-        animation-play-state: running;
-      }
+      border-radius: 4px;
     }
   }
 }
 
-/* Estatísticas ao vivo */
 .live-stats {
   display: flex;
   gap: 20px;
@@ -379,7 +391,7 @@
     background: white;
     padding: 16px 24px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -412,7 +424,6 @@
   }
 }
 
-/* Dicas de acessibilidade */
 .accessibility-hints {
   position: fixed;
   bottom: 20px;
@@ -422,7 +433,7 @@
 
   .hints-card {
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     border-left: 4px solid #2196f3;
 
     h3 {
@@ -444,7 +455,6 @@
   }
 }
 
-/* Animações */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -474,7 +484,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -502,12 +513,23 @@
   }
 }
 
-/* Responsividade para tablets */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+
 @media (max-width: 768px) {
   .game-header {
     .game-info {
       gap: 16px;
-      
+
       .info-item {
         font-size: 14px;
       }
@@ -550,7 +572,6 @@
   }
 }
 
-/* Responsividade para celulares */
 @media (max-width: 480px) {
   .game-header {
     min-height: 70px !important;
@@ -564,7 +585,7 @@
 
       .info-item {
         font-size: 12px;
-        
+
         .mat-icon {
           font-size: 16px;
         }
@@ -573,7 +594,7 @@
   }
 
   .game-container {
-    margin-top: 70px; /* Ajusta para header menor em mobile */
+    margin-top: 70px;
   }
 
   .game-area {
@@ -602,7 +623,7 @@
 
     .challenge-hint {
       font-size: 14px;
-      
+
       kbd {
         font-size: 16px;
         padding: 6px 8px;
@@ -637,7 +658,6 @@
   }
 }
 
-/* Estilos para snackbar de feedback */
 ::ng-deep {
   .snackbar-success {
     background: #4caf50 !important;
